@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="AndroidTools">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/AndroidTools.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
