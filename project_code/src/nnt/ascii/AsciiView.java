@@ -60,22 +60,22 @@ public class AsciiView extends SurfaceView implements SurfaceHolder.Callback {
 
             try {
                 Canvas canvas = holder.lockCanvas();
-                Log.i("AsciiArtDream", "canvas: " + canvas.getWidth() + ", " + canvas.getHeight());
-                Bitmap bmp1 = getImageBitmap(imgPath[0], canvas.getWidth(), canvas.getHeight());
-                //TODO: scale bitmap to screen size or larger
-                //TODO: scale bitmap to screen size or larger
-                int xOffset = (canvas.getWidth() - bmp1.getWidth()) / 2;
-                int yOffset = (canvas.getHeight() - bmp1.getHeight()) / 2;
-                ArrayList<int[]> res = getAvgPixelsList(bmp1, size.x, size.y);
+                int canvasWidth = canvas.getWidth();
+                int canvasHeight = canvas.getHeight();
+                Bitmap bmp = getImageBitmap(imgPath[0], canvasWidth, canvasHeight);
+                bmp = resize(bmp, canvasWidth, canvasHeight);
+                bmp = crop(bmp, canvasWidth, canvasHeight);
+                ArrayList<int[]> res = getAvgPixelsList(bmp, size.x, size.y);
                 Paint bgPaint = new Paint();
                 bgPaint.setColor(Color.BLACK);
                 Paint txtPaint = new Paint();
                 txtPaint.setTypeface(Typeface.MONOSPACE);
                 txtPaint.setTextSize(11);
                 canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), bgPaint);
-                for (int i = 0; i < res.size(); i++) {
+                int charsCount = res.size();
+                for (int i = 0; i < charsCount; i++) {
                     txtPaint.setColor(res.get(i)[2]);
-                    canvas.drawText(getNextChar(), xOffset + res.get(i)[0], yOffset + res.get(i)[1], txtPaint);
+                    canvas.drawText(getNextChar(), res.get(i)[0], res.get(i)[1], txtPaint);
                 }
                 holder.unlockCanvasAndPost(canvas);
             } catch (Exception e) {
@@ -85,11 +85,18 @@ public class AsciiView extends SurfaceView implements SurfaceHolder.Callback {
             return null;
         }
 
+        /**
+         * Loads bitmap from uri (content or file) and does downsampling if needed to match requred width and height.
+         *
+         * @param imagePath Image URI or file path.
+         * @param width Required width.
+         * @param height Required height.
+         * @return Loaded bitmap or null in case of loading error.
+         */
         private Bitmap getImageBitmap(String imagePath, int width, int height) {
             Bitmap outBmp = null;
-            InputStream in = null;
             try {
-                in = openInputStream(imagePath);
+                InputStream in = openInputStream(imagePath);
 
                 BitmapFactory.Options opts = new BitmapFactory.Options();
                 opts.inJustDecodeBounds = true;
@@ -114,7 +121,6 @@ public class AsciiView extends SurfaceView implements SurfaceHolder.Callback {
                 outBmp = BitmapFactory.decodeStream(in, null, opts);
                 in.close();
 
-                Log.i("AsciiArtDream", "Scaled from " + origWidth + ", " + origHeight + " to "  + outBmp.getWidth() + ", " + outBmp.getHeight());
                 if (rotateImg) {
                     Matrix matrix = new Matrix();
                     matrix.postRotate(90);
@@ -143,11 +149,67 @@ public class AsciiView extends SurfaceView implements SurfaceHolder.Callback {
             if (origWidth > reqWidth || origHeight > reqHeight) {
                 int halfWidth = origWidth / 2;
                 int halfHeight = origHeight / 2;
-                while ((halfWidth / inSampleSize) > reqWidth && (halfHeight / inSampleSize) > reqHeight) {
+                do {
                     inSampleSize *= 2;
-                }
+                } while ((halfWidth / inSampleSize) > reqWidth && (halfHeight / inSampleSize) > reqHeight);
             }
             return inSampleSize;
+        }
+
+        private Bitmap resize(Bitmap srcBmp, int width, int height) {
+            if (srcBmp == null) {
+                return null;
+            }
+
+            int srcWidth = srcBmp.getWidth();
+            int srcHeight = srcBmp.getHeight();
+            float srcRatio = (float) srcWidth / (float) srcHeight;
+            float screenRatio = (float) width / (float) height;
+            int resizedWidth = 0;
+            int resizedHeight = 0;
+
+            if (srcRatio > screenRatio) {
+                resizedHeight = height;
+                resizedWidth = (int) (resizedHeight * srcRatio);
+            } else {
+                resizedWidth = width;
+                resizedHeight = (int) (resizedWidth / srcRatio);
+            }
+
+            Bitmap resizedBmp = Bitmap.createScaledBitmap(srcBmp, resizedWidth, resizedHeight, true);
+            if (!srcBmp.equals(resizedBmp)) {
+                srcBmp.recycle();
+            }
+
+            return resizedBmp;
+        }
+
+        private Bitmap crop(Bitmap srcBmp, int width, int height) {
+            if (srcBmp == null) {
+                return null;
+            }
+            int srcWidth = srcBmp.getWidth();
+            int srcHeight = srcBmp.getHeight();
+            int croppedX = (srcWidth > width) ? (srcWidth - width) / 2 : 0;
+            int croppedY = (srcHeight > height) ? (srcHeight - height) / 2 : 0;
+
+            if (croppedX == 0 && croppedY == 0) {
+                return srcBmp;
+            }
+
+            Bitmap croppedBitmap;
+            try {
+                croppedBitmap = Bitmap.createBitmap(srcBmp, croppedX, croppedY, width, height);
+            }
+            catch(IllegalArgumentException e) {
+                if (BuildConfig.DEBUG) Log.e("AsciiArtDream", "Unable to crop bitmap", e);
+                return srcBmp;
+            }
+            if (!srcBmp.equals(croppedBitmap)) {
+                srcBmp.recycle();
+            }
+
+            return croppedBitmap;
         }
 
         private ArrayList<int[]> getAvgPixelsList(Bitmap bmp, int stepX, int stepY) {

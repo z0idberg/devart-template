@@ -1,23 +1,15 @@
 package nnt.ascii;
 
-import android.app.Activity;
 import android.database.Cursor;
-import android.graphics.*;
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.service.dreams.DreamService;
-import android.util.Log;
-import android.view.Display;
 import android.widget.FrameLayout;
 
-import java.io.CharArrayWriter;
-import java.io.File;
-import java.io.IOException;
 import java.util.Random;
 
-public class MyActivity extends DreamService {
+public class AsciiArtDreamingService extends DreamService {
+    private static final int IMAGE_CHANGE_TIMEOUT = 5000;
     private AsciiView out;
 
     @Override
@@ -41,7 +33,7 @@ public class MyActivity extends DreamService {
         public void run() {
             String path = getRandomImagePath();
             out.showImage(path);
-            handler.postDelayed(task, 5000);
+            handler.postDelayed(task, IMAGE_CHANGE_TIMEOUT);
         }
     };
 
