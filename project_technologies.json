@@ -1,7 +1,10 @@
 {
     "technologies": {
+        "apis": [],
         "platforms": [
             "Android"
         ],
+        "toolkits": []
     },
+    "themes": []
 }

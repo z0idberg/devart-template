@@ -1,4 +1,4 @@
-Ok, now we have preferences in our screensaver. We can choose the frequency of changing images, which gallery albums use to search photos, and which characters to use when creating our artworks.
+Ok, now we have preferences in our screensaver. We can choose the frequency of changing images, which gallery albums to use to search photos, and which characters to use when creating our artworks.
 
 Now user has the opportunity to experiment and to choose such parameters to get real works of art on the screen.
 
