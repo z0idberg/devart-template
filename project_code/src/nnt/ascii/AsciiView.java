@@ -19,14 +19,22 @@ import java.util.Random;
  * View that draws ascii-styled images.
  */
 public class AsciiView extends SurfaceView implements SurfaceHolder.Callback {
+    private String chars;
     private SurfaceHolder holder;
-    boolean holderReady;
+    private boolean holderReady;
+    private OnSurfaceChangedListener listener;
+    private final Random rnd = new Random();
 
 
     public AsciiView(Context context) {
         super(context);
         holder = getHolder();
         holder.addCallback(this);
+    }
+
+    public AsciiView(Context context, OnSurfaceChangedListener listener) {
+        this(context);
+        this.listener = listener;
     }
 
     public boolean showImage(String path) {
@@ -44,13 +52,18 @@ public class AsciiView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i2, int i3) {
         if (holder.getSurface() == null) return;
-
-        //TODO restart draw
+        if (listener != null) {
+            listener.surfaceChanged();
+        }
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         holderReady = false;
+    }
+
+    public void setChars(String chars) {
+        this.chars = chars;
     }
 
     private class MakeAsciiTask extends AsyncTask<String, Void, char[]> {
@@ -165,8 +178,8 @@ public class AsciiView extends SurfaceView implements SurfaceHolder.Callback {
             int srcHeight = srcBmp.getHeight();
             float srcRatio = (float) srcWidth / (float) srcHeight;
             float screenRatio = (float) width / (float) height;
-            int resizedWidth = 0;
-            int resizedHeight = 0;
+            int resizedWidth;
+            int resizedHeight;
 
             if (srcRatio > screenRatio) {
                 resizedHeight = height;
@@ -224,10 +237,9 @@ public class AsciiView extends SurfaceView implements SurfaceHolder.Callback {
             return res;
         }
 
-        String[] chars = new String[] {"B","X","0","Z","A","8","V","D","5","Y","E","S","4","K","W","R"};
-        Random rnd = new Random();
         private String getNextChar() {
-            return chars[rnd.nextInt(chars.length)];
+            int pos = rnd.nextInt(chars.length());
+            return chars.substring(pos, pos + 1);
         }
     }
 }

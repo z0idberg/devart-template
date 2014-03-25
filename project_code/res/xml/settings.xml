@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <MultiSelectListPreference
+            android:key="@string/key_sources"
+            android:persistent="true"
+            android:title="@string/pref_photo_sources"
+            android:summary="@string/pref_photo_sources_summary"/>
+    <nnt.ascii.NumberPickerPreference
+            android:key="@string/key_change_rate"
+            android:title="@string/pref_photo_change_rate"
+            android:dialogTitle="@string/pref_photo_change_rate_dlg_title"
+            android:persistent="true"
+            android:defaultValue="5"
+            android:summary="@string/pref_photo_change_rate_summary"/>
+    <EditTextPreference
+            android:key="@string/key_chars"
+            android:title="@string/pref_photo_chars"
+            android:persistent="true"
+            android:defaultValue="@string/default_ascii_chars"
+            android:summary="@string/default_ascii_chars"/>
+</PreferenceScreen>
