@@ -21,6 +21,8 @@ public class AsciiArtDreamingService extends DreamService {
     /** Gallery albums from which images should be retrieved, may be null */
     private Set<String> mediaStoreAlbums;
     private String[] imagesPaths;
+    private Random rnd = new Random();
+
 
     @Override
     public void onCreate() {
@@ -104,7 +106,7 @@ public class AsciiArtDreamingService extends DreamService {
         if (imagesPaths == null || imagesPaths.length == 0) {
             String[] projection = new String[] {MediaStore.Images.Media.DATA};
             String selection = null;
-            if (mediaStoreAlbums != null) {
+            if (mediaStoreAlbums != null && !mediaStoreAlbums.isEmpty()) {
                 selection = MediaStore.Images.ImageColumns.BUCKET_ID + " IN (" + concatenate(mediaStoreAlbums) + ")";
             }
             Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, selection, null, "");
@@ -117,7 +119,6 @@ public class AsciiArtDreamingService extends DreamService {
             }
             cursor.close();
         }
-        Random rnd = new Random();
         return imagesPaths[rnd.nextInt(imagesPaths.length)];
     }
 

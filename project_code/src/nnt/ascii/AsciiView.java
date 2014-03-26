@@ -231,10 +231,29 @@ public class AsciiView extends SurfaceView implements SurfaceHolder.Callback {
             ArrayList<int[]> res = new ArrayList<>(xStepsCount * yStepsCount);
             for (int y = 0; y < yStepsCount; y++) {
                 for (int x = 0; x < xStepsCount; x++) {
-                    res.add(new int[] {x * stepX, y * stepY, bmp.getPixel(x * stepX, y * stepY)});
+                    res.add(new int[] {x * stepX, y * stepY, getAvgColor(bmp, x, y, stepX, stepY)});
                 }
             }
             return res;
+        }
+
+        private int getAvgColor(Bitmap bmp, int x, int y, int stepX, int stepY) {
+            int pixelsCount = stepX * stepY;
+            int avgColor;
+            if (pixelsCount > 0) {
+                int[] pixels = new int[pixelsCount];
+                bmp.getPixels(pixels, 0, stepX, x * stepX, y * stepY, stepX, stepY);
+                int red = 0, green = 0, blue = 0;
+                for (int pixel : pixels) {
+                    red += Color.red(pixel);
+                    green += Color.green(pixel);
+                    blue += Color.blue(pixel);
+                }
+                avgColor = Color.rgb(red / pixelsCount, green / pixelsCount, blue / pixelsCount);
+            } else {
+                avgColor = bmp.getPixel(x, y);
+            }
+            return avgColor;
         }
 
         private String getNextChar() {

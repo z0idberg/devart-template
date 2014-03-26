@@ -6,5 +6,7 @@
         ],
         "toolkits": []
     },
-    "themes": []
+    "themes": [
+		"screensaver", "graphics", "artwork", "photo", "image"
+	]
 }
