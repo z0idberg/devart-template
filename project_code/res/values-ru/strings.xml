@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ASCII Art Daydream</string>
+    <string name="pref_photo_sources">Источники фото</string>
+    <string name="pref_photo_sources_summary">Выберите, из каких альбомов Галереи должны браться фотографии</string>
+    <string name="pref_photo_change_rate">Скорость смены фото</string>
+    <string name="pref_photo_change_rate_dlg_title">Сколько секунд показывать каждое фото</string>
+    <string name="pref_photo_change_rate_summary">Каждые %d секунд</string>
+    <string name="pref_photo_chars">Используемые символы</string>
+    <string name="default_ascii_chars">ABCDEFGHIJKLMNOPQRSTUWVXYZ0123456789</string>
+</resources>

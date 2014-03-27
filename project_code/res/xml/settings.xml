@@ -6,7 +6,7 @@
             android:persistent="true"
             android:title="@string/pref_photo_sources"
             android:summary="@string/pref_photo_sources_summary"/>
-    <nnt.ascii.NumberPickerPreference
+    <ru.softinvent.ascii.NumberPickerPreference
             android:key="@string/key_change_rate"
             android:title="@string/pref_photo_change_rate"
             android:dialogTitle="@string/pref_photo_change_rate_dlg_title"

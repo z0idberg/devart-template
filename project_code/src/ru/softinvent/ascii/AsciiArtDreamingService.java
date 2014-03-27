@@ -1,4 +1,4 @@
-package nnt.ascii;
+package ru.softinvent.ascii;
 
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -31,7 +31,7 @@ public class AsciiArtDreamingService extends DreamService {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         photoChangeRate = prefs.getInt(getString(R.string.key_change_rate), 5) * 1000;
-        chars = prefs.getString(getString(R.string.key_chars), "01");
+        chars = prefs.getString(getString(R.string.key_chars), getString(R.string.default_ascii_chars));
         mediaStoreAlbums = prefs.getStringSet(getString(R.string.key_sources), null);
     }
 

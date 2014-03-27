@@ -1,4 +1,4 @@
-package nnt.ascii;
+package ru.softinvent.ascii;
 
 import android.content.Context;
 import android.graphics.*;
@@ -69,7 +69,7 @@ public class AsciiView extends SurfaceView implements SurfaceHolder.Callback {
     private class MakeAsciiTask extends AsyncTask<String, Void, char[]> {
         @Override
         protected char[] doInBackground(String... imgPath) {
-            Point size = new Point(8, 11);
+            Point size = new Point(9, 12);
 
             try {
                 Canvas canvas = holder.lockCanvas();
@@ -83,7 +83,7 @@ public class AsciiView extends SurfaceView implements SurfaceHolder.Callback {
                 bgPaint.setColor(Color.BLACK);
                 Paint txtPaint = new Paint();
                 txtPaint.setTypeface(Typeface.MONOSPACE);
-                txtPaint.setTextSize(11);
+                txtPaint.setTextSize(12);
                 canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), bgPaint);
                 int charsCount = res.size();
                 for (int i = 0; i < charsCount; i++) {

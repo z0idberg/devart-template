@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ASCII Art Dreaming</string>
+    <string name="app_name">ASCII Art Daydream</string>
     <string name="pref_photo_sources">Photo sources</string>
     <string name="pref_photo_sources_summary">Select which gallery albums should be used to make ASCII artworks</string>
     <string name="pref_photo_change_rate">Photo change rate</string>

@@ -1,4 +1,4 @@
-package nnt.ascii;
+package ru.softinvent.ascii;
 
 import android.app.Activity;
 import android.app.LoaderManager;
@@ -73,6 +73,9 @@ public class SettingsActivity extends Activity {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if (key.equals(getString(R.string.key_chars))) {
+                if (charsPref.getText().isEmpty()) {
+                    charsPref.setText("*");
+                }
                 updateCharsSummary();
             } else if (key.equals(getString(R.string.key_change_rate))) {
                 updateChangeRateSummary();

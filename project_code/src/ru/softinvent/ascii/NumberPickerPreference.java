@@ -1,4 +1,4 @@
-package nnt.ascii;
+package ru.softinvent.ascii;
 
 import android.content.Context;
 import android.content.res.TypedArray;
